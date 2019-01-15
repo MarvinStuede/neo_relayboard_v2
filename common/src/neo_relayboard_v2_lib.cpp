@@ -80,7 +80,7 @@ int neo_relayboardV2_node::init()
     n.param("ioboard/active", m_bIOBoardActive, false);
 
     //USBOard Parameter
-    n.param("usboard/active", m_bUSBoardActive);
+    n.param("usboard/active", m_bUSBoardActive, false);
     n.param("usboard/sensor1_active", m_bUSBoardSensorActive[0], false);
     n.param("usboard/sensor2_active", m_bUSBoardSensorActive[1], false);
     n.param("usboard/sensor3_active", m_bUSBoardSensorActive[2], false);
@@ -306,8 +306,8 @@ int neo_relayboardV2_node::init()
 
 	if(m_iactive_motors != 0)
 	{
-        topicPub_drives = n.advertise<sensor_msgs::JointState>("/drives/joint_states",1);
-        topicSub_drives = n.subscribe("/drives/joint_trajectory",1,&neo_relayboardV2_node::getNewVelocitiesFomTopic, this);
+        topicPub_drives = n.advertise<sensor_msgs::JointState>("drives/joint_states",1);
+        topicSub_drives = n.subscribe("drives/joint_trajectory",1,&neo_relayboardV2_node::getNewVelocitiesFomTopic, this);
 	}
 
     if(m_bIOBoardActive)
@@ -318,24 +318,24 @@ int neo_relayboardV2_node::init()
 	}
     if(m_bUSBoardActive)
 	{
-        topicPub_usBoard = n.advertise<neo_msgs::USBoard>("/usboard/measurements",1);
+        topicPub_usBoard = n.advertise<neo_msgs::USBoard>("usboard/measurements",1);
 
-        topicPub_USRangeSensor1 = n.advertise<sensor_msgs::Range>("/usboard/sensor1",1);
-        topicPub_USRangeSensor2 = n.advertise<sensor_msgs::Range>("/usboard/sensor2",1);
-        topicPub_USRangeSensor3 = n.advertise<sensor_msgs::Range>("/usboard/sensor3",1);
-        topicPub_USRangeSensor4 = n.advertise<sensor_msgs::Range>("/usboard/sensor4",1);
-        topicPub_USRangeSensor5 = n.advertise<sensor_msgs::Range>("/usboard/sensor5",1);
-        topicPub_USRangeSensor6 = n.advertise<sensor_msgs::Range>("/usboard/sensor6",1);
-        topicPub_USRangeSensor7 = n.advertise<sensor_msgs::Range>("/usboard/sensor7",1);
-        topicPub_USRangeSensor8 = n.advertise<sensor_msgs::Range>("/usboard/sensor8",1);
-        topicPub_USRangeSensor9 = n.advertise<sensor_msgs::Range>("/usboard/sensor9",1);
-        topicPub_USRangeSensor10 = n.advertise<sensor_msgs::Range>("/usboard/sensor10",1);
-        topicPub_USRangeSensor11 = n.advertise<sensor_msgs::Range>("/usboard/sensor11",1);
-        topicPub_USRangeSensor12 = n.advertise<sensor_msgs::Range>("/usboard/sensor12",1);
-        topicPub_USRangeSensor13 = n.advertise<sensor_msgs::Range>("/usboard/sensor13",1);
-        topicPub_USRangeSensor14 = n.advertise<sensor_msgs::Range>("/usboard/sensor14",1);
-        topicPub_USRangeSensor15 = n.advertise<sensor_msgs::Range>("/usboard/sensor15",1);
-        topicPub_USRangeSensor16 = n.advertise<sensor_msgs::Range>("/usboard/sensor16",1);
+        topicPub_USRangeSensor1 = n.advertise<sensor_msgs::Range>("usboard/sensor1",1);
+        topicPub_USRangeSensor2 = n.advertise<sensor_msgs::Range>("usboard/sensor2",1);
+        topicPub_USRangeSensor3 = n.advertise<sensor_msgs::Range>("usboard/sensor3",1);
+        topicPub_USRangeSensor4 = n.advertise<sensor_msgs::Range>("usboard/sensor4",1);
+        topicPub_USRangeSensor5 = n.advertise<sensor_msgs::Range>("usboard/sensor5",1);
+        topicPub_USRangeSensor6 = n.advertise<sensor_msgs::Range>("usboard/sensor6",1);
+        topicPub_USRangeSensor7 = n.advertise<sensor_msgs::Range>("usboard/sensor7",1);
+        topicPub_USRangeSensor8 = n.advertise<sensor_msgs::Range>("usboard/sensor8",1);
+        topicPub_USRangeSensor9 = n.advertise<sensor_msgs::Range>("usboard/sensor9",1);
+        topicPub_USRangeSensor10 = n.advertise<sensor_msgs::Range>("usboard/sensor10",1);
+        topicPub_USRangeSensor11 = n.advertise<sensor_msgs::Range>("usboard/sensor11",1);
+        topicPub_USRangeSensor12 = n.advertise<sensor_msgs::Range>("usboard/sensor12",1);
+        topicPub_USRangeSensor13 = n.advertise<sensor_msgs::Range>("usboard/sensor13",1);
+        topicPub_USRangeSensor14 = n.advertise<sensor_msgs::Range>("usboard/sensor14",1);
+        topicPub_USRangeSensor15 = n.advertise<sensor_msgs::Range>("usboard/sensor15",1);
+        topicPub_USRangeSensor16 = n.advertise<sensor_msgs::Range>("usboard/sensor16",1);
 	}
 
 	//logging
@@ -774,7 +774,7 @@ void neo_relayboardV2_node::PublishJointStates()
 	//Enc (4 Byte), EncS (4 Byte) and Status (2 Byte) for each Motor 
 	for(int i = 0; i<8; i++)
 	{
-        state.name[i] = m_Drives[i].sName.c_str();
+        	state.name[i] = m_Drives[i].sName.c_str();
 		m_SerRelayBoard->getMotorEnc(i,&lEnc[i]);
 		m_SerRelayBoard->getMotorEncS(i,&lEncS[i]);
 		m_SerRelayBoard->getMotorState(i,&iStatus[i]);
@@ -785,6 +785,8 @@ void neo_relayboardV2_node::PublishJointStates()
 		state.velocity[i] = m_Drives[i].iSign * m_Drives[i].convIncrPerPeriodToRadS((float)lEncS[i]);	 
 	}
 	topicPub_drives.publish(state);
+
+	
 }
 
 void neo_relayboardV2_node::getNewVelocitiesFomTopic(const trajectory_msgs::JointTrajectory jt)
