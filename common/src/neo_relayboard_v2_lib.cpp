@@ -842,7 +842,7 @@ void neo_relayboardV2_node::PublishUSBoardData()
         //fill in header
         USRange1Header.seq = 1; 				//uint32
         USRange1Header.stamp = ros::Time::now(); 		//time
-        USRange1Header.frame_id = "usrangesensor1";		//string
+        USRange1Header.frame_id = "sonar_fl_link"; 		//string //US Sensor 1
 
         USRange1Msg.header = USRange1Header;
         USRange1Msg.radiation_type = 0; 			//uint8   => Enum ULTRASOUND=0; INFRARED=1
@@ -864,7 +864,7 @@ void neo_relayboardV2_node::PublishUSBoardData()
         //fill in header
         USRange2Header.seq = 1; 				//uint32
         USRange2Header.stamp = ros::Time::now(); 		//time
-        USRange2Header.frame_id = "usrangesensor2";		//string
+        USRange2Header.frame_id = "sonar_fr_link"; 		//string //US Sensor 2
 
         USRange2Msg.header = USRange2Header;
         USRange2Msg.radiation_type = 0; 			//uint8   => Enum ULTRASOUND=0; INFRARED=1
@@ -887,7 +887,7 @@ void neo_relayboardV2_node::PublishUSBoardData()
         //fill in header
         USRange3Header.seq = 1; 				//uint32
         USRange3Header.stamp = ros::Time::now(); 		//time
-        USRange3Header.frame_id = "usrangesensor3";		//string
+        USRange3Header.frame_id = "sonar_bl_link"; 		//string //US Sensor 3
 
         USRange3Msg.header = USRange3Header;
         USRange3Msg.radiation_type = 0; 			//uint8   => Enum ULTRASOUND=0; INFRARED=1
@@ -909,7 +909,7 @@ void neo_relayboardV2_node::PublishUSBoardData()
         //fill in header
         USRange4Header.seq = 1; 				//uint32
         USRange4Header.stamp = ros::Time::now(); 		//time
-        USRange4Header.frame_id = "usrangesensor4";		//string
+        USRange4Header.frame_id = "sonar_bc_link"; 		//string //US Sensor 4
 
         USRange4Msg.header = USRange4Header;
         USRange4Msg.radiation_type = 0; 			//uint8   => Enum ULTRASOUND=0; INFRARED=1
@@ -931,7 +931,7 @@ void neo_relayboardV2_node::PublishUSBoardData()
         //fill in header
         USRange5Header.seq = 1; 				//uint32
         USRange5Header.stamp = ros::Time::now(); 		//time
-        USRange5Header.frame_id = "usrangesensor5";		//string
+        USRange5Header.frame_id = "sonar_br_link"; 		//string //US Sensor 5
 
         USRange5Msg.header = USRange5Header;
         USRange5Msg.radiation_type = 0; 			//uint8   => Enum ULTRASOUND=0; INFRARED=1
