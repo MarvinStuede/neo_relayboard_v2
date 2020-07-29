@@ -299,12 +299,12 @@ int NeoRelayBoardNode::init()
 
 	if (m_bUSBoardActive)
 	{
-		topicPub_usBoard = n.advertise<neo_msgs::USBoard>("/usboard/measurements", 1);
+		topicPub_usBoard = n.advertise<neo_msgs::USBoard>("usboard/measurements", 1);
 
 		for (int i = 0; i < 16; ++i)
 		{
 			if(m_bUSBoardSensorActive[i]) {
-				topicPub_USRangeSensor[i] = n.advertise<sensor_msgs::Range>("/usboard/sensor" + std::to_string(i + 1), 1);
+				topicPub_USRangeSensor[i] = n.advertise<sensor_msgs::Range>("usboard/sensor" + std::to_string(i + 1), 1);
 			}
 		}
 	}
