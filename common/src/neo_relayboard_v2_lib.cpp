@@ -35,6 +35,7 @@
 #include <ros/ros.h>
 #include <../include/neo_relayboard_v2_node.h>
 #include <math.h>
+#include <stdio.h>
 
 
 
@@ -525,8 +526,9 @@ void neo_relayboardV2_node::PublishRelayBoardState()
 
         u_int16_t iBatteryVoltage = 0;
         m_SerRelayBoard->getBattVoltage(&iBatteryVoltage);
-        float_t fbattery_voltage = iBatteryVoltage/1000;   //[mV] => [v]
+        float_t fbattery_voltage = (float_t)iBatteryVoltage/1000.;   //[mV] => [v]
         relayboardv2_msg.battery_voltage = fbattery_voltage;
+
 
         int16_t iChargingCurrent = 0;
         m_SerRelayBoard->getChargingCurrent(&iChargingCurrent);
@@ -572,7 +574,7 @@ void neo_relayboardV2_node::PublishBatteryState()
     //get battery voltage from relayboardv2 msg
     u_int16_t ibattery_voltage = 0;
     m_SerRelayBoard->getBattVoltage(&ibattery_voltage);
-    float_t fbattery_voltage = ibattery_voltage/1000;
+    float_t fbattery_voltage = (float_t)ibattery_voltage/1000.;
 
     //get charging state from relayboardv2 msg
     u_int16_t iChargingState = m_SerRelayBoard->getChargingState();
