@@ -107,7 +107,6 @@ public:
 	// IOBoard:
 	ros::Publisher topicPub_IOBoard;
   ros::ServiceServer srv_SetDigOut;
-  ros::Publisher topicPub_usBoard;
 
 	// Constructor
 	NeoRelayBoardNode();
