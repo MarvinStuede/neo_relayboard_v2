@@ -169,7 +169,7 @@ private:
 
 	std::string m_sComPort;
 	RelayBoardClient *m_SerRelayBoard = 0;
-  bool m_Charging = false;
+  bool m_ChargingSet = false;
 
 	// ---- Motors ----
 	DriveParam m_Drives[8];

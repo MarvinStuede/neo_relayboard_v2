@@ -633,7 +633,7 @@ bool NeoRelayBoardNode::serviceStartCharging(std_srvs::Empty::Request &req, std_
 	if (m_bRelayBoardV2Available)
 	{
 		m_SerRelayBoard->startCharging();
-    m_Charging = true;
+    m_ChargingSet = true;
 		return true;
 	}
 	return false;
@@ -644,7 +644,7 @@ bool NeoRelayBoardNode::serviceStopCharging(std_srvs::Empty::Request &req, std_s
 	if (m_bRelayBoardV2Available)
 	{
 		m_SerRelayBoard->stopCharging();
-    m_Charging = false;
+    m_ChargingSet = false;
 		return true;
 	}
 	return false;
@@ -666,7 +666,13 @@ bool NeoRelayBoardNode::serviceRelayBoardSetLCDMsg(neo_srvs::RelayBoardSetLCDMsg
 void NeoRelayBoardNode::PublishChargingState()
 {
     std_msgs::Bool msg;
-    msg.data = m_Charging;
+    neo_msgs::RelayBoardV2 relayboardv2_msg;
+    int iChargingState = 0;
+    m_SerRelayBoard->getChargingState(&iChargingState);
+    bool relayboard_set_charging = iChargingState == relayboardv2_msg.CHS_CHARGING
+                                    || iChargingState == relayboardv2_msg.CHS_FINISHED;
+
+    msg.data = m_ChargingSet && relayboard_set_charging;
     topicPub_chargeState.publish(msg);
 }
 
