@@ -279,6 +279,7 @@ int NeoRelayBoardNode::init()
 	topicPub_isEmergencyStop = n.advertise<neo_msgs::EmergencyStopState>("emergency_stop_state", 1);
 	topicPub_RelayBoardState = n.advertise<neo_msgs::RelayBoardV2>("state", 1);
 	topicPub_BatteryState = n.advertise<sensor_msgs::BatteryState>("battery_state", 1);
+  topicPub_chargeState = n.advertise<std_msgs::Bool>("charging", 1);
 
 	srv_SetRelay = n.advertiseService("set_relay", &NeoRelayBoardNode::serviceRelayBoardSetRelay, this);
 	srv_StartCharging = n.advertiseService("start_charging", &NeoRelayBoardNode::serviceStartCharging, this);
@@ -596,8 +597,10 @@ void NeoRelayBoardNode::PublishEmergencyStopStates()
 
 	EM_msg.emergency_state = m_iEM_stop_state;
 
-	topicPub_isEmergencyStop.publish(EM_msg);
+  topicPub_isEmergencyStop.publish(EM_msg);
 }
+
+
 
 //#############################################
 //       RelayBoardV2 Service Callbacks
@@ -630,6 +633,7 @@ bool NeoRelayBoardNode::serviceStartCharging(std_srvs::Empty::Request &req, std_
 	if (m_bRelayBoardV2Available)
 	{
 		m_SerRelayBoard->startCharging();
+    m_Charging = true;
 		return true;
 	}
 	return false;
@@ -640,6 +644,7 @@ bool NeoRelayBoardNode::serviceStopCharging(std_srvs::Empty::Request &req, std_s
 	if (m_bRelayBoardV2Available)
 	{
 		m_SerRelayBoard->stopCharging();
+    m_Charging = false;
 		return true;
 	}
 	return false;
@@ -656,6 +661,13 @@ bool NeoRelayBoardNode::serviceRelayBoardSetLCDMsg(neo_srvs::RelayBoardSetLCDMsg
 	}
 	res.success = false;
 	return false;
+}
+
+void NeoRelayBoardNode::PublishChargingState()
+{
+    std_msgs::Bool msg;
+    msg.data = m_Charging;
+    topicPub_chargeState.publish(msg);
 }
 
 //#############################################

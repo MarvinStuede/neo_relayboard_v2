@@ -97,15 +97,17 @@ public:
 	ros::Subscriber topicSub_drives;
 
 	// USBoard:
-	ros::Publisher topicPub_usBoard;
-	ros::Publisher topicPub_USRangeSensor[16];
+  ros::Publisher topicPub_usBoard;
+  ros::Publisher topicPub_USRangeSensor[16];
+
 
 	ros::Subscriber topicSub_startUSBoard;
 	ros::Subscriber topicSub_stopUSBoard;
 
 	// IOBoard:
 	ros::Publisher topicPub_IOBoard;
-	ros::ServiceServer srv_SetDigOut;
+  ros::ServiceServer srv_SetDigOut;
+  ros::Publisher topicPub_usBoard;
 
 	// Constructor
 	NeoRelayBoardNode();
@@ -125,6 +127,7 @@ public:
 	void PublishRelayBoardState();
 	void PublishBatteryState();
 	void PublishEmergencyStopStates();
+  void PublishChargingState();
 	// Motors
 	void PublishJointStates();
 	// USBoard
@@ -167,6 +170,7 @@ private:
 
 	std::string m_sComPort;
 	RelayBoardClient *m_SerRelayBoard = 0;
+  bool m_Charging = false;
 
 	// ---- Motors ----
 	DriveParam m_Drives[8];
